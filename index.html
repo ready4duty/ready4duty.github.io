@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <meta charset="UTF-8" />
+        <title>入伍準備清單</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div
+            class="w-full max-w-4xl mx-auto my-4 sm:my-8 md:my-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg animate__animated animate__fadeInUp"
+        >
+            <div
+                class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-8"
+            >
+                <h1
+                    class="text-3xl md:text-4xl font-bold text-slate-800 flex-shrink-0"
+                >
+                    入伍準備清單
+                </h1>
+                <div
+                    class="w-full sm:w-auto flex items-center justify-end space-x-2 sm:space-x-4"
+                >
+                    <button
+                        id="print-button"
+                        title="列印此清單"
+                        class="flex items-center px-3 sm:px-4 py-2 bg-slate-600 text-white text-sm font-semibold rounded-lg hover:bg-slate-700 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 mr-2"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M5 4v3H4a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                        列印清單
+                    </button>
+                    <button
+                        id="reset-button"
+                        title="重設所有項目"
+                        class="text-sm font-medium text-slate-500 hover:text-red-600 hover:underline transition-colors whitespace-nowrap"
+                    >
+                        全部重設
+                    </button>
+                </div>
+            </div>
+
+            <div id="notes-section" class="mb-8">
+                <h2
+                    class="text-xl font-bold text-slate-700 mb-4 flex items-center"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 mr-2 text-slate-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                        />
+                    </svg>
+                    個人筆記
+                </h2>
+                <div
+                    id="notes-container"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                >
+                    <div
+                        id="add-note-btn"
+                        class="w-full h-32 p-3 flex flex-col justify-center items-center cursor-pointer bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg text-slate-500 hover:bg-slate-200 hover:border-slate-400 transition-colors"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-10 w-10 mb-2"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 4.5v15m7.5-7.5h-15"
+                            />
+                        </svg>
+                        <p
+                            class="font-semibold text-center text-sm sm:text-base"
+                        >
+                            新增筆記
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="w-full bg-slate-200 rounded-full h-5 mb-8 relative overflow-hidden"
+            >
+                <div
+                    id="progress-fill"
+                    class="h-full rounded-full bg-slate-600 progress-bar-fill"
+                ></div>
+                <span
+                    id="progress-text"
+                    class="absolute inset-0 flex items-center justify-center text-sm font-bold text-white progress-text-shadow"
+                    >0%</span
+                >
+            </div>
+
+            <div id="todo-list-container" class="space-y-6"></div>
+
+            <div class="mt-8 pt-6 border-t border-slate-200">
+                <div
+                    class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3"
+                >
+                    <input
+                        type="text"
+                        id="new-item-input"
+                        placeholder="新增個人物品..."
+                        class="flex-grow px-4 py-2 border border-slate-300 rounded-lg text-base transition focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
+                    />
+                    <button
+                        id="add-item-button"
+                        class="w-full sm:w-auto px-8 py-2 bg-slate-700 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+                    >
+                        新增
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            id="note-modal"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden"
+        >
+            <div
+                class="modal-backdrop fixed inset-0 bg-black bg-opacity-60"
+            ></div>
+            <div
+                class="modal-content relative w-full max-w-lg bg-white rounded-xl shadow-xl overflow-hidden"
+            >
+                <div
+                    id="note-modal-card"
+                    class="p-6 transition-colors duration-300"
+                >
+                    <input
+                        id="note-title-input"
+                        type="text"
+                        placeholder="筆記標題..."
+                        class="text-2xl font-bold text-slate-900 w-full bg-transparent border-b-2 border-slate-200 focus:border-slate-400 focus:outline-none pb-2 mb-4"
+                    />
+                    <textarea
+                        id="note-content-input"
+                        placeholder="在這裡輸入詳細內容..."
+                        class="w-full h-48 text-slate-700 text-base resize-none bg-transparent border-none focus:outline-none"
+                    ></textarea>
+                    <div class="mt-4">
+                        <label class="text-sm font-medium text-slate-600"
+                            >標籤顏色</label
+                        >
+                        <div
+                            id="color-palette"
+                            class="flex space-x-2 mt-5"
+                        ></div>
+                    </div>
+                </div>
+                <div
+                    class="px-6 py-4 bg-slate-50 flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-y-3"
+                >
+                    <button
+                        id="delete-note-btn"
+                        class="text-sm text-center sm:text-left w-full sm:w-auto font-medium text-red-600 hover:text-red-700 transition-colors"
+                    >
+                        刪除筆記
+                    </button>
+                    <div class="flex space-x-2 w-full sm:w-auto justify-end">
+                        <button
+                            id="cancel-note-btn"
+                            class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200 rounded-lg transition-colors w-1/2 sm:w-auto"
+                        >
+                            取消
+                        </button>
+                        <button
+                            id="save-note-btn"
+                            class="ml-2 px-4 py-2 bg-slate-700 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 transition-colors w-1/2 sm:w-auto"
+                        >
+                            儲存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js" defer></script>
+    </body>
+</html>
